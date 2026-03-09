@@ -34,11 +34,40 @@ create_repo() {
     echo "开始初始化仓库..."
 
     git config --global --add safe.directory "$CURRENT_DIR"
-    git init
-    git add .
-    git commit -m "first commit"
+
+    # 检查是否已经是Git仓库
+    if [ -d ".git" ]; then
+        echo "检测到已存在Git仓库"
+    else
+        git init
+    fi
+
+    # 检查是否有文件需要提交
+    if git diff-index --quiet HEAD -- 2>/dev/null; then
+        echo "工作区无变化"
+    else
+        git add .
+        git commit -m "first commit"
+    fi
+
     git branch -M main
-    git remote add origin "https://github.com/$repo_name"
+
+    # 检查remote origin是否已存在
+    if git remote | grep -q "^origin$"; then
+        echo "检测到remote origin已存在"
+        echo -n "是否要更新remote origin地址？(Y/N): "
+        read update_remote
+        if [ "$update_remote" = "Y" ] || [ "$update_remote" = "y" ]; then
+            git remote set-url origin "https://github.com/$repo_name"
+            echo "已更新remote origin地址"
+        else
+            echo "保持原有remote origin地址"
+        fi
+    else
+        git remote add origin "https://github.com/$repo_name"
+        echo "已添加remote origin"
+    fi
+
     git push -u origin main
 
     echo ""
