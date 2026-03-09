@@ -1,0 +1,32 @@
+写个bat批处理程序，实现一下功能
+当用户在目录中启动批处理程序时；先获取所在目录；先执行
+给用户4个主菜单选项 
+1 创建仓库
+2提交代码
+3回退版本
+4拉去仓库
+0 退出
+当用户选1时，先提示用户输入仓库名 如 shift8869/WHMES.git;
+如果没输入空直接返回主菜单；如果用户输入了仓库名执行如下代码
+git config --global --add safe.directory "获取的所在目录"
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/用户输入的仓库
+git push -u origin main
+执行完成返回主菜单
+当用户选2时，先提示用户输入更新说明;
+如果没输入空直接返回主菜单；如果用户输入了说明执行如下代码
+git add .
+git commit -m "更新说明"
+git push 
+当用户选3时，先 git log --oneline  返回10条最新更新记录，并列序号要让用户选择
+如果没输入空直接返回主菜单；如果用户输入了序号执行如下代码
+git reset --hard 版本号
+提示用户确认强制退回该版本吗，如果用户输入空返回主菜单，如果用户输入Y 执行如下
+git push -f
+当用户选4时， 先提示用户输入仓库名 如 shift8869/WHMES.git;
+如果用户输入空返回主菜单，如果用户输入了仓库名执行如下
+git clone https://github.com/shift8869/WHMES.git .
+
