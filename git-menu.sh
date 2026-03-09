@@ -169,10 +169,13 @@ pull_repo() {
         return
     fi
 
-    echo ""
-    echo "开始克隆仓库..."
+    # 提取仓库名称作为目录名 (去掉.git后缀)
+    dir_name=$(basename "$repo_name" .git)
 
-    git clone "https://github.com/$repo_name" .
+    echo ""
+    echo "开始克隆仓库到目录: $dir_name"
+
+    git clone "https://github.com/$repo_name" "$dir_name"
 
     echo ""
     echo "仓库拉取完成！"
