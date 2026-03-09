@@ -22,7 +22,7 @@ show_menu() {
 create_repo() {
     echo ""
     echo "--- 创建仓库 ---"
-    echo -n "请输入仓库名 (例如: shift8869/WHMES.git): "
+    echo -n "请输入仓库名 (例如: shift8869/git-menu.git): "
     read repo_name
 
     if [ -z "$repo_name" ]; then
@@ -186,7 +186,7 @@ rollback_version() {
 pull_repo() {
     echo ""
     echo "--- 拉取仓库 ---"
-    echo -n "请输入仓库名 (例如: shift8869/WHMES.git): "
+    echo -n "请输入仓库名 (例如: shift8869/git-menu.git): "
     read repo_name
 
     if [ -z "$repo_name" ]; then
