@@ -30,6 +30,9 @@ create_repo() {
         return
     fi
 
+    # 标准化路径：将反斜杠转换为正斜杠
+    repo_name="${repo_name//\\//}"
+
     echo ""
     echo "开始初始化仓库..."
 
@@ -66,6 +69,28 @@ create_repo() {
     else
         git remote add origin "https://github.com/$repo_name"
         echo "已添加remote origin"
+    fi
+
+    # 检查远程仓库是否存在
+    echo ""
+    echo "检查远程仓库..."
+    if ! git ls-remote origin &>/dev/null; then
+        echo "远程仓库不存在"
+        echo -n "是否自动创建私有仓库？(Y/N): "
+        read create_remote
+        if [ "$create_remote" = "Y" ] || [ "$create_remote" = "y" ]; then
+            # 去掉.git后缀
+            repo_name_clean="${repo_name%.git}"
+            echo "正在创建私有仓库: $repo_name_clean"
+            # 创建仓库，忽略 remote 相关错误（因为我们已经配置了 remote）
+            gh repo create "$repo_name_clean" --private 2>&1 | grep -v "Unable to add remote" || true
+            echo "远程仓库创建完成"
+        else
+            echo "取消创建，返回主菜单"
+            return
+        fi
+    else
+        echo "远程仓库已存在"
     fi
 
     git push -u origin main
